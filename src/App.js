@@ -1,24 +1,44 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import Movies from "./Components/Movies";
+import { moviesList } from "./Components/dummyData";
+import Rating from "./Components/Rating";
 
+import "./App.css";
 function App() {
+  const [searchTerm, setSearchTerm] = useState("");
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+    <>
+      <header>
+        <h1 className="vs">Visual Studios</h1>
+
+        <Rating />
+
+        <input
+          className="searchbar"
+          type="search"
+          placeholder="search..."
+          onChange={(event) => {
+            setSearchTerm(event.target.value);
+          }}
+        />
       </header>
-    </div>
+      <div className="movie-container">
+        {moviesList
+          .filter((moviesList) => {
+            if (searchTerm === "") {
+              return moviesList;
+            } else if (
+              moviesList.title.toLowerCase().includes(searchTerm.toLowerCase())
+            ) {
+              return moviesList;
+            }
+          })
+          .map((moviesList, key) => (
+            <Movies {...moviesList} key={key} />
+          ))}
+      </div>
+    </>
   );
 }
 
